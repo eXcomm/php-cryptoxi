@@ -1,0 +1,14 @@
+{
+    "name": "wxi/php-cryptoxi",
+    "description": "Off The Record Chat with PHP, MySQL and jQuery",
+    "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Logan Howlett",
+            "email": "logan@weaponxi.com"
+        }
+    ],
+    "require": {
+
+    }
+}
