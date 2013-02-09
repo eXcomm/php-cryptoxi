@@ -3,3 +3,4 @@ input = $('#input')
 output = $('#output')
 passphrase = $('#pass')
 online = $('#online')
+
