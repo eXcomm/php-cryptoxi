@@ -70,7 +70,8 @@ $(function() {
       },
       success: function(response) {
         $("#output").prepend("<br/>").prepend("Served sent: " + response.data);
-        return $("#output").prepend("<br/>").prepend("Decrypted: " + $.jCryption.decrypt(response.data, password));
+        $("#output").prepend("<br/>").prepend("Decrypted: " + $.jCryption.decrypt(response.data, password));
+        return console.dir(response);
       }
     });
   });

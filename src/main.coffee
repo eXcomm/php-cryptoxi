@@ -86,6 +86,7 @@ $ ->
         # Logging
         $("#output").prepend("<br/>").prepend "Served sent: " + response.data
         $("#output").prepend("<br/>").prepend "Decrypted: " + $.jCryption.decrypt(response.data, password)
+        console.dir response
 
 
   $("#clearSessionStorage").click (e) ->
