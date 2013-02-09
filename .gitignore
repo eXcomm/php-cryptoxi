@@ -2,3 +2,4 @@
 *.sqlite
 *.sublime-*
 /vendor/
+components
