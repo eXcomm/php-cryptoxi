@@ -67,11 +67,16 @@ $ ->
     
     # Encrypt the data with the AES key
     encryptedString = $.jCryption.encrypt($("#input").val(), password)
+    encryptedPassphrase = $.jCryption.encrypt(passphrase.val(), password)
     
     # logging
     $("#output").prepend("<br/>").prepend "----------"
     $("#output").prepend("<br/>").prepend "Plaintext: " + $("#input").val()
     $("#output").prepend("<br/>").prepend "Encrypted: " + encryptedString
+    # logging
+    $("#output").prepend("<br/>").prepend "----------"
+    $("#output").prepend("<br/>").prepend "Passphrase Plaintext: " + passphrase.val()
+    $("#output").prepend("<br/>").prepend "Passphrase Encrypted: " + encryptedPassphrase
     
     # Send the data to the server
     $.ajax
@@ -84,8 +89,25 @@ $ ->
       success: (response) ->
         
         # Logging
+        $("#output").prepend("<br/>").prepend "----------"
         $("#output").prepend("<br/>").prepend "Served sent: " + response.data
         $("#output").prepend("<br/>").prepend "Decrypted: " + $.jCryption.decrypt(response.data, password)
+        console.dir response
+
+    # Send the passphrase to the server
+    $.ajax
+      url: "src/crypt.php?"
+      dataType: "json"
+      type: "POST"
+      data:
+        jCryption: encryptedPassphrase
+
+      success: (response) ->
+        
+        # Logging
+        $("#output").prepend("<br/>").prepend "----------"
+        $("#output").prepend("<br/>").prepend "Passphrase Served sent: " + response.data
+        $("#output").prepend("<br/>").prepend "Passphrase Decrypted: " + $.jCryption.decrypt(response.data, password)
         console.dir response
 
 
