@@ -49,20 +49,22 @@
       .out{
         min-height: 500px;
       }
-      .content .span4 {
+      .input-box{
         min-height: 200px;
       }
       /* Give a quick and non-cross-browser friendly divider */
       .content .span4 {
         margin-left: 0;
-        padding-left: 19px;
+        /*padding-left: 10px;*/
         border-left: 1px solid #eee;
+        border-right: 1px solid #eee;
+        /*padding-right: 10px;*/
       }
 
       .topbar .btn {
         border: 0;
       }
-      textarea {
+      textarea#input {
         width: 100%;
       }
       .send {
@@ -140,24 +142,28 @@
         <div class="row">
           <div class="span10 out">
             <h2>Output</h2>
-            <div id="output" class="">Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.<br>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.<br>
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</div>
+            <div id="output" class=""></div>
           </div>
-          <div class="span10">
+          <div class="span10 input-box">
             <h3>Input</h3>
             <textarea id="input" rows="4" maxlength="30720"></textarea>
             <div class="row">
-              <div class="span2" id="online">
+              <div class="span3" id="online">
                 2 Online
               </div>
-              <div class="span6 passphrase">
+              <div class="span4 passphrase">
                 <input id="pass" type="text" placeholder="Passphrase...">
               </div>
-              <div class="span2 send">
+              <div class="span3 send">
+                <div class="btn-group">
                 <button class="btn" id="send">Send</button>
+                <button id="clearSessionStorage" class="btn">Clear sessionStorage</button>
+              </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="span10">
+                <p id="status" class="alert alert-info"><span  style="font-size: 16px;">&nbsp;Encrypting channel ...</span> <img src="lib/jcryption/examples/advanced/loading.gif" alt="Loading..." title="Loading..." style="margin-right:15px;" /></p>
               </div>
             </div>
           </div>

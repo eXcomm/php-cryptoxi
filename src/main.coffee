@@ -5,9 +5,10 @@ passphrase = $('#pass')
 online = $('#online')
 
 # Loader gif image string
-$loader = $("<img src=\"loading.gif\" alt=\"Loading...\" title=\"Loading...\" style=\"margin-right:15px;\" />")
+$loader = $("<img src=\"lib/jcryption/examples/advanced/loading.gif\" alt=\"Loading...\" title=\"Loading...\" style=\"margin-right:15px;\" />")
 $ ->
-  
+  $("#input, #send,#clearSessionStorage").attr "disabled", yes
+
   ###
   Creates a random string
   @returns {string} A random string
@@ -38,12 +39,13 @@ $ ->
     password = hashObj.getHash("SHA-512", "HEX")
     
     # Authenticate with the server
-    $.jCryption.authenticate password, "crypt.php?generateKeypair=true", "crypt.php?handshake=true", ((AESKey) ->
+    $.jCryption.authenticate password, "src/crypt.php?generateKeypair=true", "src/crypt.php?handshake=true", ((AESKey) ->
       
       # Enable the buttons and the textfield
-      $("#text, #send,#clearSessionStorage").attr "disabled", false
-      $("#status").html "<span style=\"font-size: 16px;\">Let's Rock!</span>"
-      
+      $("#input, #send,#clearSessionStorage").attr "disabled", false
+      $("#status").html "<span style=\"font-size: 16px;\">Secure Connection Established!</span>"
+      $("#status").removeClass("alert-info")
+      $("#status").addClass("alert-success")
       # Save the current AES key into the sessionStorage
       sessionStorage.setItem "isConnected", "1"
       sessionStorage.setItem "password", password
@@ -55,24 +57,25 @@ $ ->
   else
     
     # Enable the buttons and the textfield
-    $("#text, #send,#clearSessionStorage").attr "disabled", false
-    $("#status").html "<span style=\"font-size: 16px;\">Let's Rock!</span>"
-    
+    $("#input, #send,#clearSessionStorage").attr "disabled", false
+    $("#status").html "<span style=\"font-size: 16px;\">Secure Connection Established!</span>"
+    $("#status").removeClass("alert-info")
+    $("#status").addClass("alert-success")
     # Store the password from sessionStorage in the password variables
     password = sessionStorage.password
   $("#send").click ->
     
     # Encrypt the data with the AES key
-    encryptedString = $.jCryption.encrypt($("#text").val(), password)
+    encryptedString = $.jCryption.encrypt($("#input").val(), password)
     
     # logging
-    $("#log").prepend("\n").prepend "----------"
-    $("#log").prepend("\n").prepend "Plaintext: " + $("#text").val()
-    $("#log").prepend("\n").prepend "Encrypted: " + encryptedString
+    $("#output").prepend("<br/>").prepend "----------"
+    $("#output").prepend("<br/>").prepend "Plaintext: " + $("#input").val()
+    $("#output").prepend("<br/>").prepend "Encrypted: " + encryptedString
     
     # Send the data to the server
     $.ajax
-      url: "crypt.php?"
+      url: "src/crypt.php?"
       dataType: "json"
       type: "POST"
       data:
@@ -81,8 +84,8 @@ $ ->
       success: (response) ->
         
         # Logging
-        $("#log").prepend("\n").prepend "Served sent: " + response.data
-        $("#log").prepend("\n").prepend "Decrypted: " + $.jCryption.decrypt(response.data, password)
+        $("#output").prepend("<br/>").prepend "Served sent: " + response.data
+        $("#output").prepend("<br/>").prepend "Decrypted: " + $.jCryption.decrypt(response.data, password)
 
 
   $("#clearSessionStorage").click (e) ->

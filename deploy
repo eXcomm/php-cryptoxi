@@ -1,0 +1,35 @@
+#!/usr/bin/python
+
+#                               _
+#   __ _ _ __   ___  _ __ __  _(_)
+#  / _` | '_ \ / _ \| '_ \\ \/ / |
+# | (_| | |_) | (_) | | | |>  <| |
+#  \__,_| .__/ \___/|_| |_/_/\_\_|
+#       |_|
+
+import os
+import distutils.dir_util
+
+work_root = os.path.expanduser("~/projects/php-cryptoxi")
+dest_root = "/var/www/php-cryptoxi"
+
+# plugin_dir = "/wp-content/plugins/wpxi/"
+
+plugin_work_dir = work_root
+plugin_dest_dir = dest_root
+
+print "Source:", plugin_work_dir
+print "Destination:", plugin_dest_dir, '\n'
+
+
+if os.path.exists(plugin_dest_dir):
+    distutils.dir_util.remove_tree(plugin_dest_dir,  1)
+
+
+print "Destination removed:", not os.path.exists(plugin_dest_dir)
+print distutils.dir_util.mkpath(plugin_dest_dir, 0755, 1)
+
+distutils.dir_util.copy_tree(plugin_work_dir, plugin_dest_dir)
+
+if os.path.exists(plugin_dest_dir):
+    print "Deployment Success!"

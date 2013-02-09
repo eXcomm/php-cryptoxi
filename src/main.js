@@ -11,15 +11,16 @@ passphrase = $('#pass');
 
 online = $('#online');
 
-$loader = $("<img src=\"loading.gif\" alt=\"Loading...\" title=\"Loading...\" style=\"margin-right:15px;\" />");
+$loader = $("<img src=\"lib/jcryption/examples/advanced/loading.gif\" alt=\"Loading...\" title=\"Loading...\" style=\"margin-right:15px;\" />");
 
 $(function() {
+  var hashObj, password, randomString;
+  $("#input, #send,#clearSessionStorage").attr("disabled", true);
   /*
     Creates a random string
     @returns {string} A random string
   */
 
-  var hashObj, password, randomString;
   randomString = function() {
     var chars, i, randomstring, rnum, string_length;
     chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
@@ -37,35 +38,39 @@ $(function() {
   if (!sessionStorage.isConnected) {
     hashObj = new jsSHA(randomString(), "ASCII");
     password = hashObj.getHash("SHA-512", "HEX");
-    $.jCryption.authenticate(password, "crypt.php?generateKeypair=true", "crypt.php?handshake=true", (function(AESKey) {
-      $("#text, #send,#clearSessionStorage").attr("disabled", false);
-      $("#status").html("<span style=\"font-size: 16px;\">Let's Rock!</span>");
+    $.jCryption.authenticate(password, "src/crypt.php?generateKeypair=true", "src/crypt.php?handshake=true", (function(AESKey) {
+      $("#input, #send,#clearSessionStorage").attr("disabled", false);
+      $("#status").html("<span style=\"font-size: 16px;\">Secure Connection Established!</span>");
+      $("#status").removeClass("alert-info");
+      $("#status").addClass("alert-success");
       sessionStorage.setItem("isConnected", "1");
       return sessionStorage.setItem("password", password);
     }), function() {
       return alert("Authentication failed");
     });
   } else {
-    $("#text, #send,#clearSessionStorage").attr("disabled", false);
-    $("#status").html("<span style=\"font-size: 16px;\">Let's Rock!</span>");
+    $("#input, #send,#clearSessionStorage").attr("disabled", false);
+    $("#status").html("<span style=\"font-size: 16px;\">Secure Connection Established!</span>");
+    $("#status").removeClass("alert-info");
+    $("#status").addClass("alert-success");
     password = sessionStorage.password;
   }
   $("#send").click(function() {
     var encryptedString;
-    encryptedString = $.jCryption.encrypt($("#text").val(), password);
-    $("#log").prepend("\n").prepend("----------");
-    $("#log").prepend("\n").prepend("Plaintext: " + $("#text").val());
-    $("#log").prepend("\n").prepend("Encrypted: " + encryptedString);
+    encryptedString = $.jCryption.encrypt($("#input").val(), password);
+    $("#output").prepend("<br/>").prepend("----------");
+    $("#output").prepend("<br/>").prepend("Plaintext: " + $("#input").val());
+    $("#output").prepend("<br/>").prepend("Encrypted: " + encryptedString);
     return $.ajax({
-      url: "crypt.php?",
+      url: "src/crypt.php?",
       dataType: "json",
       type: "POST",
       data: {
         jCryption: encryptedString
       },
       success: function(response) {
-        $("#log").prepend("\n").prepend("Served sent: " + response.data);
-        return $("#log").prepend("\n").prepend("Decrypted: " + $.jCryption.decrypt(response.data, password));
+        $("#output").prepend("<br/>").prepend("Served sent: " + response.data);
+        return $("#output").prepend("<br/>").prepend("Decrypted: " + $.jCryption.decrypt(response.data, password));
       }
     });
   });
