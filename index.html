@@ -10,12 +10,64 @@
 
     <!-- Le styles -->
     <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+    <style type="text/css">
+      /* Override some defaults */
+      html, body {
+        background-color: #eee;
       }
+      body {
+        padding-top: 40px; /* 40px to make the container go all the way to the bottom of the topbar */
+      }
+      .container > footer p {
+        text-align: center; /* center align it with the container */
+      }
+      .container {
+        width: 820px; /* downsize our container to make the content feel a bit tighter and more cohesive. NOTE: this removes two full columns from the grid, meaning you only go to 14 columns and not 16. */
+      }
+
+      /* The white background content wrapper */
+      .content {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
+        -webkit-border-radius: 0 0 6px 6px;
+           -moz-border-radius: 0 0 6px 6px;
+                border-radius: 0 0 6px 6px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+      /* Page header tweaks */
+      .page-header {
+        background-color: #f5f5f5;
+        padding: 20px 20px 10px;
+        margin: -20px -20px 20px;
+      }
+
+      /* Styles you shouldn't keep as they are for displaying this base example only */
+      .out{
+        min-height: 500px;
+      }
+      .content .span4 {
+        min-height: 200px;
+      }
+      /* Give a quick and non-cross-browser friendly divider */
+      .content .span4 {
+        margin-left: 0;
+        padding-left: 19px;
+        border-left: 1px solid #eee;
+      }
+
+      .topbar .btn {
+        border: 0;
+      }
+      textarea {
+        width: 100%;
+      }
+
     </style>
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap.no-icons.min.css" rel="stylesheet">
+
 
 
   </head>
@@ -33,26 +85,55 @@
           <a class="brand" href="#">CryptoXI</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">GitHub</a></li>
-              <li><a href="#about">Issues</a></li>
-              <li><a href="#contact">Documentation</a></li>
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="https://github.com/aponxi/php-cryptoxi">GitHub</a></li>
+              <li><a href="https://github.com/aponxi/php-cryptoxi/issues">Issues</a></li>
+              <li><a href="https://github.com/aponxi/php-cryptoxi">Documentation</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
-    <div class="container">
+     <div class="container">
 
-      <h1>CryptoXI</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+      <div class="content">
+        <div class="page-header">
+          <h1>CryptoXI<small> Chat away my friend!</small></h1>
+        </div>
+        <div class="row">
+          <div class="span10 out">
+            <h2>Output</h2>
+            <div id="output"></div>
+          </div>
+          <div class="span10">
+            <h3>Input</h3>
+            <textarea rows="4"></textarea>
+            <div class="row">
+              <div class="span2 online">
+                2 Online
+              </div>
+              <div class="span6">
+                
+              </div>
+              <div class="span2 send">
+                Send
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <br/>
+        <p>&copy; WeaponXI 2013</p>
+      </footer>
 
     </div> <!-- /container -->
-
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="lib/jquery-ui/jquery-1.9.0.js"></script>
+    <script src="lib/jquery-ui/js/jquery-1.9.0.js"></script>
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
 
