@@ -39,9 +39,20 @@
         // JSON encohe the challenge
         echo json_encode(array("challenge" => AesCtr::encrypt($key, $key, 256)));
     } else {
+        
         // Decrypt the request data
         $decryptedData = AesCtr::decrypt($_POST['jCryption'], $_SESSION["key"], 256);
         $decryptedPass = AesCtr::decrypt($_POST['passphrase'], $_SESSION["key"], 256);
+        // Encrypt with cryptoxi
+
+        // Store MD5'ed passphrase (frequency) and crypted text
+
+        // get latest 100 messages for this passphrase
+
+        //send it to client, encrypted.
+
+
+
         // Encrypt it again for testing purposes
         $encryptedData = AesCtr::encrypt($decryptedData, $_SESSION["key"],256);
         // JSON encode the response
