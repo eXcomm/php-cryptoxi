@@ -38,7 +38,7 @@ $ ->
     password = hashObj.getHash("SHA-512", "HEX")
     
     # Authenticate with the server
-    $.jCryption.authenticate password, "encrypt.php?generateKeypair=true", "encrypt.php?handshake=true", ((AESKey) ->
+    $.jCryption.authenticate password, "crypt.php?generateKeypair=true", "crypt.php?handshake=true", ((AESKey) ->
       
       # Enable the buttons and the textfield
       $("#text, #send,#clearSessionStorage").attr "disabled", false
@@ -72,7 +72,7 @@ $ ->
     
     # Send the data to the server
     $.ajax
-      url: "encrypt.php?"
+      url: "crypt.php?"
       dataType: "json"
       type: "POST"
       data:

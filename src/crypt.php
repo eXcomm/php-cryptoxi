@@ -2,7 +2,7 @@
     // Start the session so we can use PHP sessions
     session_start();
     // Include the jCryption library
-    require_once("../../jcryption.php");
+    require_once("../lib/jcryption/jcryption.php");
     // Set the RSA key length
     $keyLength = 1024;
     // Create a jCrytion object
@@ -11,7 +11,7 @@
     // If the GET parameter "generateKeypair" is set
     if(isset($_GET["generateKeypair"])) {
         // Include some RSA keys
-        require_once("../../100_1024_keys.inc.php");
+        require_once("../lib/jcryption/100_1024_keys.inc.php");
         // Pick a random RSA key from the array
         $keys = $arrKeys[mt_rand(0, 100)];
         // Save the RSA keypair into the session
