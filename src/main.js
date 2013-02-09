@@ -62,34 +62,17 @@ $(function() {
     $("#output").prepend("<br/>").prepend("----------");
     $("#output").prepend("<br/>").prepend("Plaintext: " + $("#input").val());
     $("#output").prepend("<br/>").prepend("Encrypted: " + encryptedString);
-    $("#output").prepend("<br/>").prepend("----------");
-    $("#output").prepend("<br/>").prepend("Passphrase Plaintext: " + passphrase.val());
-    $("#output").prepend("<br/>").prepend("Passphrase Encrypted: " + encryptedPassphrase);
-    $.ajax({
-      url: "src/crypt.php?",
-      dataType: "json",
-      type: "POST",
-      data: {
-        jCryption: encryptedString
-      },
-      success: function(response) {
-        $("#output").prepend("<br/>").prepend("----------");
-        $("#output").prepend("<br/>").prepend("Served sent: " + response.data);
-        $("#output").prepend("<br/>").prepend("Decrypted: " + $.jCryption.decrypt(response.data, password));
-        return console.dir(response);
-      }
-    });
     return $.ajax({
       url: "src/crypt.php?",
       dataType: "json",
       type: "POST",
       data: {
-        jCryption: encryptedPassphrase
+        jCryption: encryptedString,
+        passphrase: encryptedPassphrase
       },
       success: function(response) {
-        $("#output").prepend("<br/>").prepend("----------");
-        $("#output").prepend("<br/>").prepend("Passphrase Served sent: " + response.data);
-        $("#output").prepend("<br/>").prepend("Passphrase Decrypted: " + $.jCryption.decrypt(response.data, password));
+        $("#output").prepend("<br/>").prepend("Served sent: " + response.data);
+        $("#output").prepend("<br/>").prepend("Decrypted: " + $.jCryption.decrypt(response.data, password));
         return console.dir(response);
       }
     });

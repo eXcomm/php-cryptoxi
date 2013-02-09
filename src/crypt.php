@@ -41,9 +41,11 @@
     } else {
         // Decrypt the request data
         $decryptedData = AesCtr::decrypt($_POST['jCryption'], $_SESSION["key"], 256);
+        $decryptedPass = AesCtr::decrypt($_POST['passphrase'], $_SESSION["key"], 256);
         // Encrypt it again for testing purposes
         $encryptedData = AesCtr::encrypt($decryptedData, $_SESSION["key"],256);
         // JSON encode the response
-        echo json_encode(array("data" => $encryptedData));
+        // TODO don't send decrypted passphrase back when not testing
+        echo json_encode(array("data" => $encryptedData, "passphrase" => $decryptedPass));
     }
 ?>
