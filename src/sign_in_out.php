@@ -1,0 +1,33 @@
+<?PHP
+require_once 'anon_userxi.php';
+$uxi = new UserXI();
+if ($uxi->is_logged()) {
+    $login_logout = '<li><a href="#">Logout</a></li>';
+    $avatar = $uxi->avatar_url();
+    $register_avatar =  '<li class="dropdown">
+              <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
+              <div class="dropdown-menu" style="padding: 15px; padding-bottom: 15px;">
+               <img src="'.$avatar.'">
+              </div>
+            </li>';
+} else {
+    $login_logout = '<li class="dropdown">
+              <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
+              <div class="dropdown-menu" style="padding: 15px; padding-bottom: 15px;">
+                <form>
+                  <input type="text" class="span2" placeholder="Login">
+                  <input type="text" class="span2" placeholder="Password">
+                  <button class="btn">Login</button>
+                </form>
+              </div>
+            </li>';
+    $register_avatar = "Generate User";
+}
+
+
+
+$form = '<li><a href="#">'.$register_avatar.'</a></li>
+            <li class="divider-vertical"></li>
+            '.$login_logout;
+echo $form;
+?>
