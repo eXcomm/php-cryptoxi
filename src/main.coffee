@@ -7,6 +7,7 @@ online = $('#online')
 # Loader gif image string
 $loader = $("<img src=\"lib/jcryption/examples/advanced/loading.gif\" alt=\"Loading...\" title=\"Loading...\" style=\"margin-right:15px;\" />")
 $ ->
+  register_buttons();
   $("#input, #send,#clearSessionStorage").attr "disabled", yes
 
   ###

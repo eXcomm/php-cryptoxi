@@ -15,6 +15,7 @@ $loader = $("<img src=\"lib/jcryption/examples/advanced/loading.gif\" alt=\"Load
 
 $(function() {
   var hashObj, password, randomString;
+  register_buttons();
   $("#input, #send,#clearSessionStorage").attr("disabled", true);
   /*
     Creates a random string
