@@ -1,15 +1,17 @@
 <?PHP
 require_once 'mysql.config.php';
+$table_user = TABLE_PREFIX+TABLE_USER;
 class UserXI {
     var $user, $pass;
-    function UserXI ($user, $pass) {
-       $this->$user = md5($user);
-       $this->pass = md5($pass); 
-    }
+
     private function save_cookie (){
 
     }
-    private function login (){
+    public function avatar_url ($size = 64) {
+        $logo = md5($this->usr + $this->pass);
+        $url = "http://static1.robohash.org/$logo?size=${size}x${size}";
+    }
+    public function login (){
         $u = $this->user;
         $p = $this->pass;
         // Look for entries in database 
@@ -21,17 +23,30 @@ class UserXI {
         }
         // See if found any users with the same password
         $q = "SELECT  `id` 
-        FROM  `chat_users` 
+        FROM  `${table_user}` 
         WHERE DATE(  `date` ) >= CURDATE( ) - INTERVAL 1 
         DAY AND  `user_name` =  '$u'
         AND  `password` =  '$p'
         LIMIT 0 , 30";
+        $mysqli->close();
 
     }
-    private function register (){
-        //http://static1.robohash.org/string?size=64x64
-        $usr = md5(uniqid());
+    public function register (){
+        
+        $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+        if ($mysqli->connect_error) {
+            die('Connect Error (' . $mysqli->connect_errno . ') '
+                    . $mysqli->connect_error);
+        }
+        $user = md5(uniqid());
         $pass = md5(uniqid());
+        $q = "INSERT INTO `${table_user}` (`id`, `user_name`, `password`, `date`) VALUES (NULL, '$user', '$pass', NOW());";
+        $mysqli->query($q);
+        $this->user = $user;
+        $this->pass = $pass;
+        $this->login();
+        
+
     }
 
     function logout (){
