@@ -1,6 +1,9 @@
 <?PHP
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 require_once 'mysql.config.php';
-$table_user = TABLE_PREFIX+TABLE_USER;
+
+// echo "table ".$table_user;
 class UserXI {
     var $user, $pass;
     private function start_session(){
@@ -78,7 +81,9 @@ class UserXI {
         $hashed_pass = md5($pass);
         $ip = $_SERVER['REMOTE_ADDR'];
         $ip = md5($ip);
-        $q = "INSERT INTO `$table_user` (`id`, `user_name`, `password`, `ip`, `date`) VALUES (NULL, '$user', '$hashed_pass', '$ip', NOW());";
+        $db = MYSQL_DB;
+        $table_user = TABLE_PREFIX.TABLE_USER;
+        $q = "INSERT INTO `$db`.`$table_user` (`id`, `user_name`, `password`, `ip`, `date`) VALUES (NULL, '$user', '$hashed_pass', '$ip', NOW());";
         $mysqli->query($q);
 
         $mysqli->close();
@@ -98,4 +103,10 @@ class UserXI {
 
     }
 }
+function test () {
+    $uxi = new UserXI();
+    $res = $uxi->register();
+    var_dump($res);
+}
+test();
 ?>
