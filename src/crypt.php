@@ -60,9 +60,11 @@
             $uxi = new UserXI();
             $uxi->user = $user;
             $uxi->pass = $pass;
-            $res = encrypt($uxi->login());
-            unset($uxi);
+            $res = $uxi->login();
+            $res = encrypt($res);
+            
             send(array('login'=>$res));
+            unset($uxi);
             return;
 
 
