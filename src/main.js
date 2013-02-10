@@ -86,6 +86,15 @@ $(function() {
 
 register_buttons = function() {
   return $.get('src/sign_in_out.php', function(data) {
-    return $('#registerNav').html(data);
+    $('#registerNav').html(data);
+    $('#login').click(function() {
+      return console.log("login");
+    });
+    $('#register').click(function() {
+      return console.log("register");
+    });
+    return $('#logout').click(function() {
+      return console.log("logout");
+    });
   });
 };
