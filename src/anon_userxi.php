@@ -19,6 +19,7 @@ class UserXI {
     }
     private function session_save (){
         $_SESSION['logged'] = md5($this->user+$this->pass);
+        $_SESSION['user_name'] = $this->user;
 
     }
     public function avatar_url ($size = 64) {
@@ -29,7 +30,7 @@ class UserXI {
         if ($this->is_logged())
             return;
         $u = $this->user;
-        $p = $this->pass;
+        $p = md5($this->pass);
         // Look for entries in database 
         // Find ones that are max day old
         $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
@@ -66,13 +67,17 @@ class UserXI {
         }
         $user = md5(uniqid());
         $pass = md5(uniqid());
-        $q = "INSERT INTO `${table_user}` (`id`, `user_name`, `password`, `date`) VALUES (NULL, '$user', '$pass', NOW());";
+        $hashed_pass = md5($pass);
+        $q = "INSERT INTO `${table_user}` (`id`, `user_name`, `password`, `date`) VALUES (NULL, '$user', '$hashed_pass', NOW());";
         $mysqli->query($q);
 
         $mysqli->close();
         $this->user = $user;
         $this->pass = $pass;
+        
         $this->login();
+        //send user the password pair
+        return array('user'=>$user,'pass'=>$pass);
         
 
     }

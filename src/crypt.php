@@ -41,47 +41,41 @@
         // JSON encohe the challenge
         echo json_encode(array("challenge" => AesCtr::encrypt($key, $key, 256)));
     } else {
-        
-        // Decrypt the request data
-        $decryptedData = AesCtr::decrypt($_POST['jCryption'], $_SESSION["key"], 256);
-        $decryptedPass = AesCtr::decrypt($_POST['passphrase'], $_SESSION["key"], 256);
-        $publicKey = $decryptedPass;
-
-
-
-
-
-        $privateKey = $decryptedPass;
-        // Encrypt with cryptoxi
-
-        // Store MD5'ed passphrase (frequency) and crypted text
-
-        // get latest 100 messages for this passphrase
-
-        //send it to client, encrypted.
-
-
-
+        process_recieved();
         // Encrypt it again for testing purposes
         $encryptedData = AesCtr::encrypt($decryptedData, $_SESSION["key"],256);
         // JSON encode the response
         // TODO don't send decrypted passphrase back when not testing
-        echo json_encode(array("data" => $encryptedData, "passphrase" => $decryptedPass));
+        
     }
     function process_send (){
-
+        echo json_encode(array("data" => $encryptedData, "passphrase" => $decryptedPass));
     }
     function process_recieved (){
         
         if (isset($_POST['user']) && isset($_POST['pass'])) {
-            // wants to login
+            $user = decrypt($_POST['user']);
+            $pass = decrypt($_POST['pass']);
+            
         }elseif ( isset($_POST['text']) && isset($_POST['passphrase']) && isset($_POST['frequency']) ) {
             // sends message
-            $passphrase = strtolower($_POST['passphrase']);
-        } else {
+            $passphrase = safe_char(decrypt($_POST['passphrase']));
+
+        } elseif ( isset($_POST['open']) && isset($_POST['passphrase']) && isset($_POST['frequency']) ){
+            //wants to open a frequency
+        } elseif (isset($_POST['retrieve']) && isset($_POST['passphrase']) && isset($_POST['frequency'])) {
             # code...
         }
         
 
+    }
+    function decrypt ($str){
+        return AesCtr::decrypt($str, $_SESSION["key"], 256);
+    }
+    function encrypt ($str){
+        return AesCtr::encrypt($str, $_SESSION["key"], 256);
+    }
+    function safe_char ($str) {
+        return preg_replace('/[^a-z]/', "", strtolower($str));
     }
 ?>
