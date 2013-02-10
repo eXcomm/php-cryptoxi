@@ -4,6 +4,7 @@ output = $('#output')
 passphrase = $('#pass')
 online = $('#online')
 
+
 # Loader gif image string
 $loader = $("<img src=\"lib/jcryption/examples/advanced/loading.gif\" alt=\"Loading...\" title=\"Loading...\" style=\"margin-right:15px;\" />")
 $ ->
@@ -104,3 +105,9 @@ register_buttons = ()->
   $.get('src/sign_in_out.php', (data)->
     $('#registerNav').html(data)
   )
+  $('#login').click ->
+    console.log "login"
+  $('#register').click ->
+    console.log "register"
+  $('#logout').click ->
+    console.log "logout"
