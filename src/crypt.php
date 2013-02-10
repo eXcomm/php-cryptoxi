@@ -60,7 +60,7 @@
             $uxi = new UserXI();
             $uxi->user = $user;
             $uxi->pass = $pass;
-            $res = $uxi->login();
+            $res = encrypt($uxi->login());
             unset($uxi);
             send(array('login'=>$res));
             return;
@@ -76,6 +76,11 @@
             $credentials = array('user' => $u, 'pass' => $p);
             send($credentials);
             return;
+        }elseif (isset($_POST['logout'])) {
+            $uxi = new UserXI();
+            $res = $uxi->logout();
+            $res = encrypt($res);
+            send(array('logout'=>$res));
         }
         elseif ( isset($_POST['text']) && isset($_POST['passphrase']) && isset($_POST['frequency']) ) {
             // sends message

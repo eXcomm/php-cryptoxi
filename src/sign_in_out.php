@@ -15,8 +15,8 @@ if ($uxi->is_logged()) {
               <a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
               <div class="dropdown-menu" style="padding: 15px; padding-bottom: 15px;">
                 <form>
-                  <input type="text" class="span2" placeholder="Login">
-                  <input type="password" class="span2" placeholder="Password">
+                  <input id="user" type="text" class="span2" placeholder="Login">
+                  <input id="pass" type="password" class="span2" placeholder="Password">
                   <button id="login" class="btn">Login</button>
                 </form>
               </div>
