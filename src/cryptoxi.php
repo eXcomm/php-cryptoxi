@@ -61,8 +61,4 @@ class cryptoxi{
 		return rtrim($dec,(( ord(substr($dec,strlen($dec)-1,1))>=0 and ord(substr($dec, strlen($dec)-1,1))<=16)? chr(ord( substr($dec,strlen($dec)-1,1))):null)); 
 	} 
 }
-//Time 
-echo md5(uniqid());
-echo '<br>';
-echo md5(uniqid());
 ?>
