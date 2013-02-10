@@ -99,3 +99,7 @@ $ ->
     # Refresh the page
     window.location = window.location
 
+register_buttons = ()->
+  $.get('src/sign_in_out.php', (data)->
+    $('#registerNav').html(data)
+  )

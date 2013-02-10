@@ -3,6 +3,7 @@
     if(session_id() == '') {
         session_start();
     }
+    require_once("anon_userxi.php");
     // Include the jCryption library
     require_once("../lib/jcryption/jcryption.php");
     // Set the RSA key length
@@ -56,8 +57,27 @@
         if (isset($_POST['user']) && isset($_POST['pass'])) {
             $user = decrypt($_POST['user']);
             $pass = decrypt($_POST['pass']);
-            
-        }elseif ( isset($_POST['text']) && isset($_POST['passphrase']) && isset($_POST['frequency']) ) {
+            $uxi = new UserXI();
+            $uxi->user = $user;
+            $uxi->pass = $pass;
+            $res = $uxi->login();
+            unset($uxi);
+            send(array('login'=>$res));
+            return;
+
+
+        }elseif (isset($_POST['register'])) {
+            $uxi = new UserXI();
+            $cr = $uxi->register();
+            $u = encrypt($cr['user']);
+            $p = encrypt($cr['pass']);
+
+            unset($uxi);
+            $credentials = array('user' => $u, 'pass' => $p);
+            send($credentials);
+            return;
+        }
+        elseif ( isset($_POST['text']) && isset($_POST['passphrase']) && isset($_POST['frequency']) ) {
             // sends message
             $passphrase = safe_char(decrypt($_POST['passphrase']));
 
@@ -74,6 +94,10 @@
     }
     function encrypt ($str){
         return AesCtr::encrypt($str, $_SESSION["key"], 256);
+    }
+    function send ($ar){
+        echo json_encode($ar);
+        return;
     }
     function safe_char ($str) {
         return preg_replace('/[^a-z]/', "", strtolower($str));

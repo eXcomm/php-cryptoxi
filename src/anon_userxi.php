@@ -8,9 +8,9 @@ class UserXI {
             session_start();
         }
     }
-    private function is_logged(){
+    public function is_logged(){
         $this->start_session();
-        if (isset($_SESSION['logged']) && $_SESSION['logged'] ==  md5($this->user+$this->pass)) {
+        if (isset($_SESSION['logged']) ) {
             return true;
         } else {
             return false;
@@ -23,12 +23,16 @@ class UserXI {
 
     }
     public function avatar_url ($size = 64) {
-        $logo = md5($this->usr + $this->pass);
+        // needs to be logged in
+        if (!$this->is_logged()) {
+            return;
+        }
+        $logo = $_SESSION['logged'];
         $url = "http://static1.robohash.org/$logo?size=${size}x${size}";
     }
     public function login (){
         if ($this->is_logged())
-            return;
+            return $this->is_logged();
         $u = $this->user;
         $p = md5($this->pass);
         // Look for entries in database 
@@ -39,20 +43,24 @@ class UserXI {
                     . $mysqli->connect_error);
         }
         // See if found any users with the same password
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = md5($ip);
         $q = "SELECT  `id` 
         FROM  `${table_user}` 
         WHERE DATE(  `date` ) >= CURDATE( ) - INTERVAL 1 
         DAY AND  `user_name` =  '$u'
         AND  `password` =  '$p'
+        AND `ip` = '$ip'
         LIMIT 0 , 30";
 
         $mysqli->query($q);
         if ($mysqli->mysqli_affected_rows() == 1) {
             $this->session_save();
-            
+            return $this->is_logged();
         }
         else {
-            die('found ' +$mysqli->mysqli_affected_rows()+' rows.');
+            // die('found ' +$mysqli->mysqli_affected_rows()+' rows.');
+            return $this->is_logged();
         }
         $mysqli->close();
 
@@ -68,14 +76,16 @@ class UserXI {
         $user = md5(uniqid());
         $pass = md5(uniqid());
         $hashed_pass = md5($pass);
-        $q = "INSERT INTO `${table_user}` (`id`, `user_name`, `password`, `date`) VALUES (NULL, '$user', '$hashed_pass', NOW());";
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $ip = md5($ip);
+        $q = "INSERT INTO `${table_user}` (`id`, `user_name`, `password`, `ip`, `date`) VALUES (NULL, '$user', '$hashed_pass', '$ip', NOW());";
         $mysqli->query($q);
 
         $mysqli->close();
         $this->user = $user;
         $this->pass = $pass;
         
-        $this->login();
+        // $this->login();
         //send user the password pair
         return array('user'=>$user,'pass'=>$pass);
         
