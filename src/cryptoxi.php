@@ -18,6 +18,13 @@ class cryptoxi{
 		return pack("H*",$str);
 		
 	}
+	private function privateKeyGen(){
+
+	}
+	private function closestHour (){
+		$t = time();
+		$next = date("g:59A");
+	}
 	/*
 	Hex to bin - bin to hex conversion example
 	===========================================
@@ -54,4 +61,21 @@ class cryptoxi{
 		return rtrim($dec,(( ord(substr($dec,strlen($dec)-1,1))>=0 and ord(substr($dec, strlen($dec)-1,1))<=16)? chr(ord( substr($dec,strlen($dec)-1,1))):null)); 
 	} 
 }
+//Time 
+$time = time();
+for($i = 0; $i < 100; $i++){
+	
+	$time += $i*60;
+	echo date('H:i', $time);
+	$prev = $time - ($time % 1800);
+	$next = $prev + 1800;
+	$now = date('H:i',$prev);
+	$then = date('H:i',$next);
+	echo "- $i Minutes: Secheduled between $now and $then <br/>";
+}
+// $prev = $time - ($time % 1800);
+// $next = $prev + 1800;
+// $now = date('H:i',$prev);
+// $then = date('H:i',$next);
+// echo "Secheduled between $now and $then";
 ?>

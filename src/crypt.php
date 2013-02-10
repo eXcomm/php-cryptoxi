@@ -45,21 +45,7 @@
         $decryptedPass = AesCtr::decrypt($_POST['passphrase'], $_SESSION["key"], 256);
         $publicKey = $decryptedPass;
 
-        //Time 
 
-        $given = 10; //minutes given for the other side to logon
-        $expiration = 120; //minutes given before expiration
-        $time = time();
-        $plus_later = $time + $given*60;
-        $plus_expiration = $time + $expiration;
-
-        $now = new DateTime($time);
-        $Hnow = $now->format('H'); 
-        $Mnow = $now->format('i');
-
-        $now_plus_later = new DateTime($plus_later);
-        $Hlater = $now_plus_later->format('H'); 
-        $Mlater = $now_plus_later->format('i');
 
 
 
