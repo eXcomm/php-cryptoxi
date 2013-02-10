@@ -101,8 +101,10 @@ $ ->
     # Refresh the page
     window.location = window.location
 encrypt= (str)->
+  password = sessionStorage.password
   $.jCryption.encrypt(str, password)
 decrypt= (str)->
+  password = sessionStorage.password
   $.jCryption.decrypt(str, password)
 register_buttons = ()->
   $.get('src/sign_in_out.php', (data)->

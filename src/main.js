@@ -85,10 +85,14 @@ $(function() {
 });
 
 encrypt = function(str) {
+  var password;
+  password = sessionStorage.password;
   return $.jCryption.encrypt(str, password);
 };
 
 decrypt = function(str) {
+  var password;
+  password = sessionStorage.password;
   return $.jCryption.decrypt(str, password);
 };
 
