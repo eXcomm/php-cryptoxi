@@ -78,7 +78,7 @@ class UserXI {
         $hashed_pass = md5($pass);
         $ip = $_SERVER['REMOTE_ADDR'];
         $ip = md5($ip);
-        $q = "INSERT INTO `${table_user}` (`id`, `user_name`, `password`, `ip`, `date`) VALUES (NULL, '$user', '$hashed_pass', '$ip', NOW());";
+        $q = "INSERT INTO `$table_user` (`id`, `user_name`, `password`, `ip`, `date`) VALUES (NULL, '$user', '$hashed_pass', '$ip', NOW());";
         $mysqli->query($q);
 
         $mysqli->close();
