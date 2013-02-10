@@ -3,8 +3,22 @@ require_once 'mysql.config.php';
 $table_user = TABLE_PREFIX+TABLE_USER;
 class UserXI {
     var $user, $pass;
-
-    private function save_cookie (){
+    private function start_session(){
+        if(session_id() == '') {
+            session_start();
+        }
+    }
+    private function is_logged(){
+        $this->start_session();
+        if (isset($_SESSION['logged']) && $_SESSION['logged'] ==  md5($this->user+$this->pass)) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+    private function session_save (){
+        $_SESSION['logged'] = md5($this->user+$this->pass);
 
     }
     public function avatar_url ($size = 64) {
@@ -12,6 +26,8 @@ class UserXI {
         $url = "http://static1.robohash.org/$logo?size=${size}x${size}";
     }
     public function login (){
+        if ($this->is_logged())
+            return;
         $u = $this->user;
         $p = $this->pass;
         // Look for entries in database 
@@ -28,11 +44,21 @@ class UserXI {
         DAY AND  `user_name` =  '$u'
         AND  `password` =  '$p'
         LIMIT 0 , 30";
+
+        $mysqli->query($q);
+        if ($mysqli->mysqli_affected_rows() == 1) {
+            $this->session_save();
+            
+        }
+        else {
+            die('found ' +$mysqli->mysqli_affected_rows()+' rows.');
+        }
         $mysqli->close();
 
     }
     public function register (){
-        
+        if ($this->is_logged())
+            return;
         $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
         if ($mysqli->connect_error) {
             die('Connect Error (' . $mysqli->connect_errno . ') '
@@ -42,6 +68,8 @@ class UserXI {
         $pass = md5(uniqid());
         $q = "INSERT INTO `${table_user}` (`id`, `user_name`, `password`, `date`) VALUES (NULL, '$user', '$pass', NOW());";
         $mysqli->query($q);
+
+        $mysqli->close();
         $this->user = $user;
         $this->pass = $pass;
         $this->login();
@@ -50,6 +78,8 @@ class UserXI {
     }
 
     function logout (){
+        unset( $_SESSION['logged']);
+        return !$this->is_logged();
 
     }
 }

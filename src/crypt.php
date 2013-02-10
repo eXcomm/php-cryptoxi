@@ -1,6 +1,8 @@
 <?php
     // Start the session so we can use PHP sessions
-    session_start();
+    if(session_id() == '') {
+        session_start();
+    }
     // Include the jCryption library
     require_once("../lib/jcryption/jcryption.php");
     // Set the RSA key length
@@ -65,5 +67,21 @@
         // JSON encode the response
         // TODO don't send decrypted passphrase back when not testing
         echo json_encode(array("data" => $encryptedData, "passphrase" => $decryptedPass));
+    }
+    function process_send (){
+
+    }
+    function process_recieved (){
+        
+        if (isset($_POST['user']) && isset($_POST['pass'])) {
+            // wants to login
+        }elseif ( isset($_POST['text']) && isset($_POST['passphrase']) && isset($_POST['frequency']) ) {
+            // sends message
+            $passphrase = strtolower($_POST['passphrase']);
+        } else {
+            # code...
+        }
+        
+
     }
 ?>
