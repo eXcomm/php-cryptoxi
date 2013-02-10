@@ -62,20 +62,7 @@ class cryptoxi{
 	} 
 }
 //Time 
-$time = time();
-for($i = 0; $i < 100; $i++){
-	
-	$time += $i*60;
-	echo date('H:i', $time);
-	$prev = $time - ($time % 1800);
-	$next = $prev + 1800;
-	$now = date('H:i',$prev);
-	$then = date('H:i',$next);
-	echo "- $i Minutes: Secheduled between $now and $then <br/>";
-}
-// $prev = $time - ($time % 1800);
-// $next = $prev + 1800;
-// $now = date('H:i',$prev);
-// $then = date('H:i',$next);
-// echo "Secheduled between $now and $then";
+echo md5(uniqid());
+echo '<br>';
+echo md5(uniqid());
 ?>
