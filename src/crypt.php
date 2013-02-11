@@ -3,7 +3,6 @@
     if(session_id() == '') {
         session_start();
     }
-    require_once("anon_userxi.php");
     // Include the jCryption library
     require_once("../lib/jcryption/jcryption.php");
     // Set the RSA key length
