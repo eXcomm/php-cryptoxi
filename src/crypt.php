@@ -54,45 +54,7 @@
     }
     function process_recieved (){
         
-        if (isset($_POST['user']) && isset($_POST['pass'])) {
-            $user = decrypt($_POST['user']);
-            $pass = decrypt($_POST['pass']);
-            $uxi = new UserXI();
-            $uxi->user = $user;
-            $uxi->pass = $pass;
-            $res = $uxi->login();
-            $res = encrypt($res);
-            
-            send(array('login'=>$res));
-            unset($uxi);
-            return;
 
-
-        }elseif (isset($_POST['register'])) {
-            $uxi = new UserXI();
-            $cr = $uxi->register();
-            $u = encrypt($cr['user']);
-            $p = encrypt($cr['pass']);
-
-            unset($uxi);
-            $credentials = array('user' => $u, 'pass' => $p);
-            send($credentials);
-            return;
-        }elseif (isset($_POST['logout'])) {
-            $uxi = new UserXI();
-            $res = $uxi->logout();
-            $res = encrypt($res);
-            send(array('logout'=>$res));
-        }
-        elseif ( isset($_POST['text']) && isset($_POST['passphrase']) && isset($_POST['frequency']) ) {
-            // sends message
-            $passphrase = safe_char(decrypt($_POST['passphrase']));
-
-        } elseif ( isset($_POST['open']) && isset($_POST['passphrase']) && isset($_POST['frequency']) ){
-            //wants to open a frequency
-        } elseif (isset($_POST['retrieve']) && isset($_POST['passphrase']) && isset($_POST['frequency'])) {
-            # code...
-        }
         
 
     }
