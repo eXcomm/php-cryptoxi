@@ -126,7 +126,7 @@ class CryptoXI {
             $table = TABLE_MSG;
             $db = MYSQL_DB;
             $qcount = "SELECT COUNT(`message`) FROM `$table` WHERE `chat_sessions_id` = '$chat_sessions_id' ORDER BY `id` DESC";
-            if ($result = mysqli_query($mysqli, $q)) {
+            if ($result = mysqli_query($mysqli, $qcount)) {
                 $row = $result->fetch_array(MYSQLI_NUM);
                 $count = $row[0];
 
@@ -137,19 +137,22 @@ class CryptoXI {
                 mysqli_free_result($result);
 
             }
-            $q = "SELECT  `message` 
-                FROM  `$table` 
-                WHERE  `chat_sessions_id` =  '$chat_sessions_id'
-                ORDER BY  `id` DESC 
-                LIMIT 0 , 30
-                ";
             if (isset($_SESSION['read'])) {
                 $read = $_SESSION['read'];
             } else {
                 $read = $_SESSION['read'] = 0;
             }
+            $how_many = $count - $read;
+
+            $q = "SELECT  `message` 
+                FROM  `$table` 
+                WHERE  `chat_sessions_id` =  '$chat_sessions_id'
+                ORDER BY  `id` DESC 
+                LIMIT 0 , $how_many
+                ";
             
-            if ($result = mysqli_query($mysqli, $q)) {
+            
+            if ($count > 0 && $read > $count && $result = mysqli_query($mysqli, $q)) {
                 $rows = array();
                 while($row = $result->fetch_assoc()) {
                         $rows[] = $row['message'];
