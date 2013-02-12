@@ -60,6 +60,38 @@ class CryptoXI {
             $libcryptoxi->privatekey = $privatekey($room_id);
             $hex = $libcryptoxi->encryptxi($text);
             // store $hex to the database.
+            $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+
+            /* check connection */
+            if ($mysqli->connect_errno) {
+                printf("Connect failed: %s\n", $mysqli->connect_error);
+                exit();
+            }
+            $table = TABLE_MSG;
+            $db = MYSQL_DB;
+            $q = "INSERT INTO  `$db`.`$table` (
+                `id` ,
+                `room` ,
+                `room_key` ,
+                `date`
+                )
+                VALUES (
+                NULL ,  '$room',  '$room_key', NOW( )
+                );";
+            if ($result = mysqli_query($mysqli, $q)) {
+                
+                //if success return room id
+                // free result set 
+                mysqli_free_result($result);
+                $mysqli->close();
+                return $room_id;
+            }
+            else {
+                printf("Error: %s\n", mysqli_error($mysqli));
+                $mysqli->close();
+                return false;
+            }
+
 
         } else {
             // room isn't valid
@@ -120,8 +152,11 @@ class CryptoXI {
 
         return $privatekey;
     }
+    function get_roomID ($room_id){
+        return is_room_valid($room_id, false, true);
+    }
 
-    function is_room_valid($room_id, $return_room_key = false){
+    function is_room_valid($room_id, $return_room_key = false, $return_id = false){
         $room = md5($room_id);
         //look up $room number from database
         //if it exists within 2 hours
@@ -134,7 +169,7 @@ class CryptoXI {
         }
         $table = TABLE_SES;
         $db = MYSQL_DB;
-        $q = "SELECT  `room_key` 
+        $q = "SELECT  * 
             FROM  `chat_sessions` 
             WHERE  `room` =  '$room'
             AND  `date` >= DATE_SUB( NOW( ) , INTERVAL 2 HOUR ) 
@@ -143,6 +178,7 @@ class CryptoXI {
             
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $room_key = $row['room_key'];
+            $roomID = $row['id'];
             // echo $room_key;
             // free result set 
 
@@ -150,39 +186,48 @@ class CryptoXI {
                 //we got a match
                 if ($result->num_rows > 1) {
                     # we got more than we bargained for
-                    $result->close();
-                    $mysqli->close();
-                    return false;
+                    $return = false;
                 }
                 if ($return_room_key) {
-                    $result->close();
-                    $mysqli->close();
-                    return $room_key;
-                } else {
-                    $result->close();
-                    $mysqli->close();
-                    return true;
+
+                    $return = $room_key;
+                }elseif ($return_id) {
+                    $return = $roomID;
+                }
+                 else {
+
+                    $return = true;
                 }
                 
                 
             } else {
-                mysqli_free_result($result);
-                $mysqli->close();
-                return false;
+
+                $return = false;
             }
-            
+            mysqli_free_result($result);
+            $mysqli->close();
         }
         else {
             printf("Error: %s\n", mysqli_error($mysqli));
+            mysqli_free_result($result);
             $mysqli->close();
-            return false;
+            $return = false;
         }
+        return $return;
+
         
     }
 
 }
 
 $c = new CryptoXI();
-// echo $c->gen_room();
-echo $c->get_room_key('5119b56d6948d');
+echo '<br>gen_room';
+$room = $c->gen_room();
+echo $room;
+echo '<br>get_room_key';
+echo $c->get_room_key($room );
+echo '<br>is_room_valid';
+echo $c->is_room_valid ($room );
+echo '<br>get_roomID';
+echo $c->get_roomID ($room );
 ?>
