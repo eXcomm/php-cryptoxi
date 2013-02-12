@@ -61,6 +61,7 @@ class CryptoXI {
             $libcryptoxi->publickey = $passphrase;
             $libcryptoxi->privatekey = $privatekey($room_id);
             $hex = $libcryptoxi->encryptxi($text);
+            $chat_sessions_id = $this->get_roomID($room_id);
             // store $hex to the database.
             $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
 
@@ -73,20 +74,20 @@ class CryptoXI {
             $db = MYSQL_DB;
             $q = "INSERT INTO  `$db`.`$table` (
                 `id` ,
-                `room` ,
-                `room_key` ,
-                `date`
+                `message` ,
+                `chat_sessions_id`
                 )
                 VALUES (
-                NULL ,  '$room',  '$room_key', NOW( )
+                NULL ,  '$hex',  '$chat_sessions_id'
                 );";
-            if ($result = mysqli_query($mysqli, $q)) {
-                
+            if (mysqli_insert_id($mysqli)) {
+                printf ("New Record has id %d.\n", mysqli_insert_id($mysqli));
                 //if success return room id
                 // free result set 
                 mysqli_free_result($result);
                 $mysqli->close();
-                return $room_id;
+
+                return true;
             }
             else {
                 printf("Error: %s\n", mysqli_error($mysqli));
@@ -253,4 +254,6 @@ echo $c->is_room_valid ($room );
 
 echo '<br><h2>get_roomID</h2>';
 echo $c->get_roomID ($room );
+echo '<br><h2>store</h2>';
+echo $c->store ($room, 'alala', 'text' );
 ?>
