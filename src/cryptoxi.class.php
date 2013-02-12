@@ -35,6 +35,7 @@ class CryptoXI {
             return $room_id;
         }
         else {
+            printf("Error: %s\n", mysqli_error($mysqli));
             $mysqli->close();
             return false;
         }
