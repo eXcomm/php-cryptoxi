@@ -1,4 +1,5 @@
 <?php
+    require_once 'cryptoxi.class.php';
     // Start the session so we can use PHP sessions
     if(session_id() == '') {
         session_start();
@@ -52,7 +53,35 @@
         echo json_encode(array("data" => $encryptedData, "passphrase" => $decryptedPass));
     }
     function process_recieved (){
-        
+        $cryptoxi = new CryptoXI();
+        if (isset($_GET['room']) && isset($_POST['passphrase']) && isset($_POST['text'])){
+            //sending text
+            $room = $_GET['room'];
+            $passphrase = decrypt($_POST['passphrase']);
+            $text = decrypt($_POST['text']);
+            
+            // store the text
+            $cryptoxi->store($room,$passphrase,$text);
+
+
+        }
+        elseif (isset($_POST['new_room'])) {
+            $new_room = decrypt($_POST['new_room']);
+            if ($new_room) {
+                $room_id = $cryptoxi->gen_room();
+                if ($room_id) {
+                    $rid = encrypt($room_id);
+                    $sending = array('room_id' => $rid);
+                    send($sending);
+                } else {
+                    //room id is not generated
+                    $rid = encrypt('room id not generated');
+                    $sending = array('error' => $rid);
+                    send($sending);
+                }
+                
+            }
+        }
 
         
 
