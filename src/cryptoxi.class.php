@@ -1,6 +1,8 @@
 <?PHP
 require_once 'libcryptoxi.class.php';
 require_once 'mysql.config.php';
+error_reporting(E_ALL);
+
 class CryptoXI {
     function gen_room (){
         $room_id = uniqid();
@@ -152,15 +154,23 @@ class CryptoXI {
 
         return $privatekey;
     }
-    function get_roomID ($room_id){
-        
-        $result = is_room_valid($room_id, false, true);
-        echo "<br> asked for $room_id and got $result <br>";
-        return $result;
+    function get_roomID ($room_id) {
+
+        if($this->is_room_valid($room_id)){
+            //look up roomkey from database
+            return $this->is_room_valid($room_id, false, true);
+        }
+        else{
+            return false;
+        } 
     }
 
-    function is_room_valid($room_id, $return_room_key = false, $return_id = false){
+    function is_room_valid($room_id, $return_room_key = false, $return_room_id = false){
         $room = md5($room_id);
+        echo "<br>return_id: $return_room_id";
+        echo "<br>return_room_key: $return_room_key";
+        echo "<br>room_id: $room_id";
+        echo "<br>";
         //look up $room number from database
         //if it exists within 2 hours
         $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
@@ -188,6 +198,7 @@ class CryptoXI {
 
             if ($result->num_rows > 0) {
                 //we got a match
+                echo "<br>we got a match<br>";
                 if ($result->num_rows > 1) {
                     # we got more than we bargained for
                     $row_cnt = $result->num_rows;
@@ -198,12 +209,7 @@ class CryptoXI {
 
                     $return = $room_key;
                 }
-                else {
-
-                    $return = true;
-                }
-
-                if ($return_id) {
+                elseif ($return_room_id) {
                     $return = $roomID;
                 }
                  else {
@@ -235,20 +241,20 @@ class CryptoXI {
 
 $c = new CryptoXI();
 echo "<h1>TESTS</h1>";
-echo '<br>gen_room';
+echo '<br><h2>gen_room</h2>';
 $room = $c->gen_room();
 echo "<br>";
 echo $room;
 
-echo '<br>get_room_key';
+echo '<br><h2>get_room_key</h2>';
 echo "<br>";
 echo $c->get_room_key($room );
 
-echo '<br>is_room_valid';
+echo '<br><h2>is_room_valid</h2>';
 echo "<br>";
 echo $c->is_room_valid ($room );
 
-echo '<br>get_roomID';
+echo '<br><h2>get_roomID</h2>';
 echo "<br>";
 echo $c->get_roomID ($room );
 ?>
