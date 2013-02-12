@@ -136,5 +136,5 @@ class CryptoXI {
 }
 
 $c = new CryptoXI();
-echo $c->gen_room();
+// echo $c->gen_room();
 ?>
