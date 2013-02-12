@@ -24,7 +24,7 @@ class CryptoXI {
             `date`
             )
             VALUES (
-            NULL ,  '$room',  '$roomkey', NOW( )
+            NULL ,  '$room',  '$room_key', NOW( )
             );";
         if ($result = mysqli_query($mysqli, $q)) {
             
