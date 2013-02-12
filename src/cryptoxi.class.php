@@ -26,7 +26,7 @@ class CryptoXI {
             VALUES (
             NULL ,  '$room',  '$roomkey', NOW( )
             );";
-        if ($result = mysqli_query($link, $q)) {
+        if ($result = mysqli_query($mysqli, $q)) {
             
             //if success return room id
             // free result set 
