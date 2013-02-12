@@ -121,7 +121,7 @@ class CryptoXI {
         return $privatekey;
     }
 
-    function is_room_valid($room_id){
+    function is_room_valid($room_id, $return_room_key = false){
         $room = md5($room_id);
         //look up $room number from database
         //if it exists within 2 hours
@@ -143,21 +143,38 @@ class CryptoXI {
             
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $room_key = $row['room_key'];
-            echo $room_key;
+            // echo $room_key;
             // free result set 
+
+            if ($result->num_rows > 0) {
+                //we got a match
+                if ($result->num_rows > 1) {
+                    # we got more than we bargained for
+                    $result->close();
+                    $mysqli->close();
+                    return false;
+                }
+                if ($return_room_key) {
+                    $result->close();
+                    $mysqli->close();
+                    return $room_key;
+                } else {
+                    $result->close();
+                    $mysqli->close();
+                    return true;
+                }
+                
+                
+            } else {
+                mysqli_free_result($result);
+                $mysqli->close();
+                return false;
+            }
             
-            mysqli_free_result($result);
-            $mysqli->close();
-            return true;
         }
         else {
             printf("Error: %s\n", mysqli_error($mysqli));
             $mysqli->close();
-            return false;
-        }
-        if (true) {
-            return true;
-        } else {
             return false;
         }
         
