@@ -184,5 +184,5 @@ class CryptoXI {
 
 $c = new CryptoXI();
 // echo $c->gen_room();
-echo $c->is_room_valid('5119b56d6948d');
+echo $c->get_room_key('5119b56d6948d');
 ?>
