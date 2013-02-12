@@ -198,7 +198,7 @@ class CryptoXI {
 
             if ($result->num_rows > 0) {
                 //we got a match
-                echo "<br>we got a match<br>";
+                // echo "<br>we got a match<br>";
                 if ($result->num_rows > 1) {
                     # we got more than we bargained for
                     $row_cnt = $result->num_rows;
