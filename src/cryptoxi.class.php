@@ -1,5 +1,6 @@
 <?PHP
 require_once 'libcryptoxi.class.php';
+require_once 'mysql.config.php';
 class CryptoXI {
     function gen_room (){
         $room_id = uniqid();
@@ -7,16 +8,37 @@ class CryptoXI {
 
         $room = md5($room_id);
         //save $room, $roomkey, with date to database
-        //if success return room id
-        if (true) {
+        $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+
+        /* check connection */
+        if ($mysqli->connect_errno) {
+            printf("Connect failed: %s\n", $mysqli->connect_error);
+            exit();
+        }
+        $table = TABLE_SES;
+        $db = MYSQL_DB;
+        $q = "INSERT INTO  `$db`.`$table` (
+            `id` ,
+            `room` ,
+            `room_key` ,
+            `date`
+            )
+            VALUES (
+            NULL ,  '$room',  '$roomkey', NOW( )
+            );";
+        if ($result = mysqli_query($link, $q)) {
+            
+            //if success return room id
+            // free result set 
+            mysqli_free_result($result);
+            $mysqli->close();
             return $room_id;
-        } else {
+        }
+        else {
+            $mysqli->close();
             return false;
         }
-        
 
-
-        
     }
     function get_room_key ($room_id){
         $room = md5($room_id);
