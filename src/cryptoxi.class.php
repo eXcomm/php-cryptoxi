@@ -179,6 +179,7 @@ class CryptoXI {
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $room_key = $row['room_key'];
             $roomID = $row['id'];
+            var_dump($row);
             // echo $room_key;
             // free result set 
 
@@ -186,12 +187,20 @@ class CryptoXI {
                 //we got a match
                 if ($result->num_rows > 1) {
                     # we got more than we bargained for
+                    $row_cnt = $result->num_rows;
+                    printf("Result set has %d rows.\n", $row_cnt);
                     $return = false;
                 }
                 if ($return_room_key) {
 
                     $return = $room_key;
-                }elseif ($return_id) {
+                }
+                else {
+
+                    $return = true;
+                }
+
+                if ($return_id) {
                     $return = $roomID;
                 }
                  else {
@@ -201,6 +210,7 @@ class CryptoXI {
                 
                 
             } else {
+                echo "<br>Results Not > 0<br>";
 
                 $return = false;
             }
