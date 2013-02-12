@@ -153,7 +153,10 @@ class CryptoXI {
         return $privatekey;
     }
     function get_roomID ($room_id){
-        return is_room_valid($room_id, false, true);
+        
+        $result = is_room_valid($room_id, false, true);
+        echo "<br> asked for $room_id and got $result <br>";
+        return $result;
     }
 
     function is_room_valid($room_id, $return_room_key = false, $return_id = false){
