@@ -221,13 +221,21 @@ class CryptoXI {
 }
 
 $c = new CryptoXI();
+echo "<h1>TESTS</h1>";
 echo '<br>gen_room';
 $room = $c->gen_room();
+echo "<br>";
 echo $room;
+
 echo '<br>get_room_key';
+echo "<br>";
 echo $c->get_room_key($room );
+
 echo '<br>is_room_valid';
+echo "<br>";
 echo $c->is_room_valid ($room );
+
 echo '<br>get_roomID';
+echo "<br>";
 echo $c->get_roomID ($room );
 ?>
