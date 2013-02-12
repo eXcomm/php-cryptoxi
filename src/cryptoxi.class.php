@@ -167,10 +167,10 @@ class CryptoXI {
 
     function is_room_valid($room_id, $return_room_key = false, $return_room_id = false){
         $room = md5($room_id);
-        echo "<br>return_id: $return_room_id";
-        echo "<br>return_room_key: $return_room_key";
-        echo "<br>room_id: $room_id";
-        echo "<br>";
+        // echo "<br>return_id: $return_room_id";
+        // echo "<br>return_room_key: $return_room_key";
+        // echo "<br>room_id: $room_id";
+        // echo "<br>";
         //look up $room number from database
         //if it exists within 2 hours
         $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
@@ -219,7 +219,7 @@ class CryptoXI {
                 
                 
             } else {
-                echo "<br>Results Not > 0<br>";
+                // echo "<br>Results Not > 0<br>";
 
                 $return = false;
             }
@@ -241,20 +241,16 @@ class CryptoXI {
 
 $c = new CryptoXI();
 echo "<h1>TESTS</h1>";
-echo '<br><h2>gen_room</h2>';
+echo '<h2>gen_room</h2>';
 $room = $c->gen_room();
-echo "<br>";
 echo $room;
 
 echo '<br><h2>get_room_key</h2>';
-echo "<br>";
 echo $c->get_room_key($room );
 
 echo '<br><h2>is_room_valid</h2>';
-echo "<br>";
 echo $c->is_room_valid ($room );
 
 echo '<br><h2>get_roomID</h2>';
-echo "<br>";
 echo $c->get_roomID ($room );
 ?>
