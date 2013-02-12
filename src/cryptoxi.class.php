@@ -192,7 +192,7 @@ class CryptoXI {
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $room_key = $row['room_key'];
             $roomID = $row['id'];
-            var_dump($row);
+            // var_dump($row);
             // echo $room_key;
             // free result set 
 
