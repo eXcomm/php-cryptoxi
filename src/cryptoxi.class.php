@@ -141,9 +141,11 @@ class CryptoXI {
             LIMIT 0 , 30";
         if ($result = mysqli_query($mysqli, $q)) {
             
-            //if success return room id
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            $room_key = $row['room_key'];
+            echo $room_key;
             // free result set 
-            var_dump($result);
+            
             mysqli_free_result($result);
             $mysqli->close();
             return true;
