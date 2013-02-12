@@ -125,6 +125,34 @@ class CryptoXI {
         $room = md5($room_id);
         //look up $room number from database
         //if it exists within 2 hours
+        $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+
+        /* check connection */
+        if ($mysqli->connect_errno) {
+            printf("Connect failed: %s\n", $mysqli->connect_error);
+            exit();
+        }
+        $table = TABLE_SES;
+        $db = MYSQL_DB;
+        $q = "SELECT  `room_key` 
+            FROM  `chat_sessions` 
+            WHERE  `room` =  '$room'
+            AND  `date` >= DATE_SUB( NOW( ) , INTERVAL 2 HOUR ) 
+            LIMIT 0 , 30";
+        if ($result = mysqli_query($mysqli, $q)) {
+            
+            //if success return room id
+            // free result set 
+            var_dump($result);
+            mysqli_free_result($result);
+            $mysqli->close();
+            return true;
+        }
+        else {
+            printf("Error: %s\n", mysqli_error($mysqli));
+            $mysqli->close();
+            return false;
+        }
         if (true) {
             return true;
         } else {
@@ -137,4 +165,5 @@ class CryptoXI {
 
 $c = new CryptoXI();
 // echo $c->gen_room();
+echo $c->is_room_valid('5119b56d6948d');
 ?>
