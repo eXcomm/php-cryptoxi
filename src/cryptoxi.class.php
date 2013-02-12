@@ -125,30 +125,42 @@ class CryptoXI {
             }
             $table = TABLE_MSG;
             $db = MYSQL_DB;
+            $qcount = "SELECT COUNT(`message`) FROM `$table` WHERE `chat_sessions_id` = '$chat_sessions_id' ORDER BY `id` DESC";
+            if ($result = mysqli_query($mysqli, $q)) {
+                $row = $result->fetch_array(MYSQLI_NUM);
+                $count = $row[0];
+
+                mysqli_free_result($result);
+            }
+            else {
+                printf("Error: %s\n", mysqli_error($mysqli));
+                mysqli_free_result($result);
+
+            }
             $q = "SELECT  `message` 
                 FROM  `$table` 
                 WHERE  `chat_sessions_id` =  '$chat_sessions_id'
                 ORDER BY  `id` DESC 
+                LIMIT 0 , 30
                 ";
             if (isset($_SESSION['read'])) {
                 $read = $_SESSION['read'];
             } else {
-                $_SESSION['read'] = 0;
+                $read = $_SESSION['read'] = 0;
             }
             
             if ($result = mysqli_query($mysqli, $q)) {
-                
-                $row = $result->fetch_array(MYSQLI_ASSOC);
-                $message = $row['message'];
-                var_dump($row);
-                var_dump($result);
+                $rows = array();
+                while($row = $result->fetch_assoc()) {
+                        $rows[] = $row['message'];
+                    }
+ 
+                var_dump($rows);
+                echo "<h3>FOUND $count rows.</h3>";
                 die('death');
-                if ($result->num_rows > 0) {
+                if (sizeof($rows > 0)) {
                     //we got a match
-                    // echo "<br>we got a match<br>";
-                    $num_msg = $result->num_rows;
-                    //$_SESSION['read'];
-                    var_dump($row);
+
                     
                 } else {
                     // echo "<br>Results Not > 0<br>";
