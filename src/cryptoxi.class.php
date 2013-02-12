@@ -59,7 +59,7 @@ class CryptoXI {
             //continue
             $libcryptoxi = new libcryptoxi();
             $libcryptoxi->publickey = $passphrase;
-            $libcryptoxi->privatekey = $privatekey($room_id);
+            $libcryptoxi->privatekey = $this->privatekey($room_id);
             $hex = $libcryptoxi->encryptxi($text);
             $chat_sessions_id = $this->get_roomID($room_id);
             // store $hex to the database.
@@ -80,7 +80,8 @@ class CryptoXI {
                 VALUES (
                 NULL ,  '$hex',  '$chat_sessions_id'
                 );";
-            if (mysqli_insert_id($mysqli)) {
+    
+            if ($result = mysqli_query($mysqli, $q)) {
                 printf ("New Record has id %d.\n", mysqli_insert_id($mysqli));
                 //if success return room id
                 // free result set 
@@ -98,6 +99,7 @@ class CryptoXI {
 
         } else {
             // room isn't valid
+            echo "<br>Room isn't valid<br>";
             return false;
         }
         
@@ -108,7 +110,7 @@ class CryptoXI {
             //continue
             $libcryptoxi = new libcryptoxi();
             $libcryptoxi->publickey = $passphrase;
-            $libcryptoxi->privatekey = $privatekey($room_id);
+            $libcryptoxi->privatekey = $this->privatekey($room_id);
             //retrieve entries within the creation time of $room_id
             //for $room_id
             //order by ID Descending
@@ -152,6 +154,7 @@ class CryptoXI {
         $s = md5($static_key);
 
         $privatekey = md5($y.$d.$m.$r.$s);
+        echo "<br>privatekey $privatekey<br>";
 
         return $privatekey;
     }
