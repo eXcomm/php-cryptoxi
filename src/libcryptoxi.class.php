@@ -1,11 +1,11 @@
 <?PHP
-class cryptoxi{
+class libcryptoxi{
 	
 	var $publickey = ""; //$_POST['key'];
 	//var $encrypt = ""; // $_POST['tocrypt'];
 	//var $decrypt = "";
 	var $privatekey = "2c3fec85b5f6b0a1cd5a1010c67eb772";
-	function cryptoxi($publickey, $privatekey){
+	function libcryptoxi($publickey, $privatekey){
 		$this->publickey = $publickey;
 		$this->privatekey = $privatekey;
 	}
