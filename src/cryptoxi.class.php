@@ -111,10 +111,59 @@ class CryptoXI {
             $libcryptoxi = new libcryptoxi();
             $libcryptoxi->publickey = $passphrase;
             $libcryptoxi->privatekey = $this->privatekey($room_id);
+            $chat_sessions_id = $this->get_roomID($room_id);
             //retrieve entries within the creation time of $room_id
             //for $room_id
             //order by ID Descending
             // lets say $result array is this
+            $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+
+            /* check connection */
+            if ($mysqli->connect_errno) {
+                printf("Connect failed: %s\n", $mysqli->connect_error);
+                exit();
+            }
+            $table = TABLE_MSG;
+            $db = MYSQL_DB;
+            $q = "SELECT  `message` 
+                FROM  `$table` 
+                WHERE  `chat_sessions_id` =  '$chat_sessions_id'
+                ORDER BY  `id` DESC 
+                ";
+            if (isset($_SESSION['read'])) {
+                $read = $_SESSION['read'];
+            } else {
+                $_SESSION['read'] = 0;
+            }
+            
+            if ($result = mysqli_query($mysqli, $q)) {
+                
+                $row = $result->fetch_array(MYSQLI_ASSOC);
+                $message = $row['message'];
+                var_dump($row);
+                var_dump($result);
+                die('death');
+                if ($result->num_rows > 0) {
+                    //we got a match
+                    // echo "<br>we got a match<br>";
+                    $num_msg = $result->num_rows;
+                    //$_SESSION['read'];
+                    var_dump($row);
+                    
+                } else {
+                    // echo "<br>Results Not > 0<br>";
+
+                    $return = false;
+                }
+                mysqli_free_result($result);
+                $mysqli->close();
+            }
+            else {
+                printf("Error: %s\n", mysqli_error($mysqli));
+                mysqli_free_result($result);
+                $mysqli->close();
+                $return = false;
+            }
             $result = array();
 
             $decrypted = array();
@@ -187,7 +236,7 @@ class CryptoXI {
         $table = TABLE_SES;
         $db = MYSQL_DB;
         $q = "SELECT  * 
-            FROM  `chat_sessions` 
+            FROM  `$table` 
             WHERE  `room` =  '$room'
             AND  `date` >= DATE_SUB( NOW( ) , INTERVAL 2 HOUR ) 
             LIMIT 0 , 30";
@@ -259,4 +308,17 @@ echo '<br><h2>get_roomID</h2>';
 echo $c->get_roomID ($room );
 echo '<br><h2>store</h2>';
 echo $c->store ($room, 'alala', 'text' );
+echo $c->store ($room, 'alala', 'text1' );
+echo $c->store ($room, 'alala', 'text2' );
+echo $c->store ($room, 'alala', 'text3' );
+echo $c->store ($room, 'alala', 'text4' );
+echo $c->store ($room, 'alala', 'text5' );
+echo $c->store ($room, 'alala', 'text6' );
+echo $c->store ($room, 'alala', 'text7' );
+echo $c->store ($room, 'alala', 'text8' );
+echo $c->store ($room, 'alala', 'text9' );
+echo '<br><h2>retrieve</h2>';
+echo $c->retrieve ($room, 'alala');
+
+
 ?>
