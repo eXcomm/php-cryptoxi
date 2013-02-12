@@ -45,7 +45,7 @@ class CryptoXI {
         $room = md5($room_id);
         if($this->is_room_valid($room_id)){
             //look up roomkey from database
-            $roomkey = true;
+            return $this->is_room_valid($room_id, true);
         }
         else{
             return false;
