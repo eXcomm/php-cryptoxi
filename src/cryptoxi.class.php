@@ -417,9 +417,9 @@ echo "<br>";
 echo $date;
 $time = DateTime::createFromFormat("Y-m-d H:i:s", $date);
 echo "<br>";
-echo $time->format('H-i-s');
-$time->add(new DateInterval('P10h'));
+echo $time->format('H:i:s');
+$time->add(new DateInterval('PT2H'));
 echo "<br>";
-echo $time->format('H-i-s');
+echo $time->format('H:i:s');
 
 ?>
