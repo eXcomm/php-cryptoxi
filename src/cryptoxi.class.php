@@ -1,7 +1,7 @@
 <?PHP
 require_once 'libcryptoxi.class.php';
 require_once 'mysql.config.php';
-error_reporting(E_ALL);
+
 
 class CryptoXI {
     function gen_room (){
@@ -410,8 +410,17 @@ $r =  $c->retrieve ($room, 'alala');
 echo "<pre>";
 var_dump($r);
 echo "</pre>";
-
+trigger_error("Cannot divide by zero", E_USER_ERROR);
 echo '<br><h2>get_room_exp</h2>';
-echo $c->get_room_exp ($room );
+$date =  $c->get_room_exp ($room );
+echo strtotime($date);
+echo "<br>";
+echo $date;
+$time = DateTime::createFromFormat("Y-m-d H:i:s", $date);
+echo "<br>";
+echo $time->format('H-i-s');
+$time->add(new DateInterval('P10h'));
+echo "<br>";
+echo $time->format('H-i-s');
 
 ?>
