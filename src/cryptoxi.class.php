@@ -52,6 +52,18 @@ class CryptoXI {
         }
         
     }
+    function get_room_exp ($room_id){
+        $room = md5($room_id);
+        if($this->is_room_valid($room_id)){
+            //look up roomkey from database
+            $room_date =  $this->is_room_valid($room_id, false, false, true);
+            return $room_date;
+        }
+        else{
+            return false;
+        } 
+
+    }
     function get_room_key ($room_id){
         $room = md5($room_id);
         if($this->is_room_valid($room_id)){
@@ -276,10 +288,11 @@ class CryptoXI {
             FROM  `$table` 
             WHERE `date` < DATE_SUB( NOW( ) , INTERVAL 2 HOUR )";
         if ($result = mysqli_query($mysqli, $q)) {
-                return true;
+                
                 echo "<h3>Rows Deleted ".mysqli_num_rows($result)."</h3>";
                 mysqli_free_result($result);
                 $mysqli->close();
+                return true;
             }
             else {
                 printf("Error: %s\n", mysqli_error($mysqli));
@@ -289,7 +302,7 @@ class CryptoXI {
             }
     }
 
-    function is_room_valid($room_id, $return_room_key = false, $return_room_id = false){
+    function is_room_valid($room_id, $return_room_key = false, $return_room_id = false, $return_room_date = false){
         $room = md5($room_id);
         // echo "<br>return_id: $return_room_id";
         // echo "<br>return_room_key: $return_room_key";
@@ -316,6 +329,7 @@ class CryptoXI {
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $room_key = $row['room_key'];
             $roomID = $row['id'];
+            $room_date = $row['date'];
             // var_dump($row);
             // echo $room_key;
             // free result set 
@@ -335,6 +349,9 @@ class CryptoXI {
                 }
                 elseif ($return_room_id) {
                     $return = $roomID;
+                }
+                elseif ($return_room_date) {
+                    $return = $room_date;
                 }
                  else {
 
@@ -393,5 +410,8 @@ $r =  $c->retrieve ($room, 'alala');
 echo "<pre>";
 var_dump($r);
 echo "</pre>";
+
+echo '<br><h2>get_room_exp</h2>';
+echo $c->get_room_exp ($room );
 
 ?>
