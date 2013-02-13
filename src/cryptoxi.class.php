@@ -264,6 +264,30 @@ class CryptoXI {
             return false;
         } 
     }
+    function clean_up(){
+        $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+         if ($mysqli->connect_errno) {
+            printf("Connect failed: %s\n", $mysqli->connect_error);
+            exit();
+        }
+        $table = TABLE_SES;
+        $db = MYSQL_DB;
+        $q = "DELETE 
+            FROM  `$table` 
+            WHERE `date` < DATE_SUB( NOW( ) , INTERVAL 2 HOUR )";
+        if ($result = mysqli_query($mysqli, $q)) {
+                return true;
+                echo "<h3>Rows Deleted ".mysqli_num_rows($result)."</h3>";
+                mysqli_free_result($result);
+                $mysqli->close();
+            }
+            else {
+                printf("Error: %s\n", mysqli_error($mysqli));
+                mysqli_free_result($result);
+                $mysqli->close();
+                return false;
+            }
+    }
 
     function is_room_valid($room_id, $return_room_key = false, $return_room_id = false){
         $room = md5($room_id);
