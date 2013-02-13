@@ -410,7 +410,6 @@ $r =  $c->retrieve ($room, 'alala');
 echo "<pre>";
 var_dump($r);
 echo "</pre>";
-trigger_error("Cannot divide by zero", E_USER_ERROR);
 echo '<br><h2>get_room_exp</h2>';
 $date =  $c->get_room_exp ($room );
 echo strtotime($date);
