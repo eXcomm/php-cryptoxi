@@ -43,6 +43,15 @@ class CryptoXI {
         }
 
     }
+    function is_line_secure(){
+        //this actually just sees if there is a key to encrypt with.
+        if (session_id() != '' && isset($_SESSION['key'])) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
     function get_room_key ($room_id){
         $room = md5($room_id);
         if($this->is_room_valid($room_id)){
