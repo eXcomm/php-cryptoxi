@@ -146,12 +146,19 @@ class CryptoXI {
                 mysqli_free_result($result);
 
             }
+
             if (isset($_SESSION['read'])) {
                 $read = $_SESSION['read'];
             } else {
                 $read = $_SESSION['read'] = 0;
             }
-            $how_many = $count - $read;
+
+            $how_many = $this->retrieve_how_many($count);
+            if (!$how_many || $count == 0) {
+                // everything is read.
+                // or no messages to retrieve.
+                return true;
+            }
 
             $q = "SELECT  `message` 
                 FROM  `$table` 
@@ -161,48 +168,60 @@ class CryptoXI {
                 ";
             
             
-            if ($count > 0 && $read > $count && $result = mysqli_query($mysqli, $q)) {
-                $rows = array();
+            if ($result = mysqli_query($mysqli, $q)) {
+                //if ($count > 0 && $read <= $count) {
+                    # code...
+                //}
+                $decrypted = array();
                 while($row = $result->fetch_assoc()) {
-                        $rows[] = $row['message'];
-                    }
- 
-                var_dump($rows);
-                echo "<h3>FOUND $count rows.</h3>";
-                die('death');
-                if (sizeof($rows > 0)) {
-                    //we got a match
 
-                    
-                } else {
-                    // echo "<br>Results Not > 0<br>";
-
-                    $return = false;
+                    $_SESSION['read'] += 1;
+                    $decrypted[] = $libcryptoxi->decryptxi( $row['message']);
                 }
+
+                echo "<h3>FOUND $count rows.</h3>";
+                // die('death');
+
                 mysqli_free_result($result);
                 $mysqli->close();
+
+                //return decrypted array
+                return array_reverse($decrypted);
             }
             else {
                 printf("Error: %s\n", mysqli_error($mysqli));
                 mysqli_free_result($result);
                 $mysqli->close();
-                $return = false;
+                return false;
             }
-            $result = array();
 
-            $decrypted = array();
 
-            foreach ($result as $message) {
-                $decrypted[] = $libcryptoxi->decryptxi($message);
-            }
-            //return decrypted array
-            return $decrypted;
             
 
         } else {
             // room isn't valid
             return false;
         }
+    }
+    private function retrieve_how_many ($count, $limit = 100, $read = NULL ){
+        if (is_null($read)){
+            $read = $_SESSION['read'];
+        }
+        $Rx = ($count-$read) ;
+        if ($Rx != $limit) {
+            $Rx = $Rx % $limit;
+        }
+
+        if($read > $count){
+            die('something went wrong. How did you read more than there was?');
+        }
+
+        if ($Rx == 0) {
+            // there is nothing.
+            return false;
+        }
+        return $Rx;
+
     }
     function privatekey($room_id){
         $static_key = "Anybody remember Ultima Online?";
