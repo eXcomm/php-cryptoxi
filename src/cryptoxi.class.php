@@ -147,16 +147,14 @@ class CryptoXI {
 
             }
 
-            if (isset($_SESSION['read'])) {
-                $read = $_SESSION['read'];
-            } else {
-                $read = $_SESSION['read'] = 0;
-            }
+
 
             $how_many = $this->retrieve_how_many($count);
             if (!$how_many || $count == 0) {
                 // everything is read.
                 // or no messages to retrieve.
+                echo "<h3>how_many $how_many</h3>";
+                echo "<h3>count $count</h3>";
                 return true;
             }
 
@@ -208,18 +206,24 @@ class CryptoXI {
             $read = $_SESSION['read'];
         }
         $Rx = ($count-$read) ;
-        if ($Rx != $limit) {
+        echo "<h3>Rx $Rx</h3>";
+        echo "<h3>Limit $limit</h3>";
+        if ($Rx == 0) {
+            // there is nothing.
+            echo "<h3>RX Nothing</h3>";
+            return false;
+        }
+        if ($Rx !== $limit) {
+
             $Rx = $Rx % $limit;
+            $Rx = ($Rx == 0) ? $limit : $Rx ;
         }
 
         if($read > $count){
             die('something went wrong. How did you read more than there was?');
         }
 
-        if ($Rx == 0) {
-            // there is nothing.
-            return false;
-        }
+        
         return $Rx;
 
     }
@@ -334,7 +338,7 @@ class CryptoXI {
     }
 
 }
-
+include 'page.php';
 $c = new CryptoXI();
 echo "<h1>TESTS</h1>";
 echo '<h2>gen_room</h2>';
