@@ -361,7 +361,9 @@ echo $c->store ($room, 'alala', 'text7' );
 echo $c->store ($room, 'alala', 'text8' );
 echo $c->store ($room, 'alala', 'text9' );
 echo '<br><h2>retrieve</h2>';
-echo $c->retrieve ($room, 'alala');
-
+$r =  $c->retrieve ($room, 'alala');
+echo "<pre>";
+var_dump($r);
+echo "</pre>";
 
 ?>
