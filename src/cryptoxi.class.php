@@ -2,7 +2,7 @@
 require_once 'libcryptoxi.class.php';
 require_once 'mysql.config.php';
 
-
+date_default_timezone_set('America/New_York');
 class CryptoXI {
     function gen_room (){
         $room_id = uniqid();
@@ -57,7 +57,18 @@ class CryptoXI {
         if($this->is_room_valid($room_id)){
             //look up roomkey from database
             $room_date =  $this->is_room_valid($room_id, false, false, true);
-            return $room_date;
+            // convert to date time object
+            $time = DateTime::createFromFormat("Y-m-d H:i:s", $room_date);
+            $time->add(new DateInterval('PT2H'));
+            
+            $time_now = new DateTime();
+
+            $res = $time->format('U') - $time_now->format('U');
+            if ($res <= 0){
+                return 0;
+            }
+
+            return $res;
         }
         else{
             return false;
@@ -240,7 +251,7 @@ class CryptoXI {
 
     }
     function privatekey($room_id){
-        date_default_timezone_set('UTC');
+        
 
         $static_key = "Anybody remember Ultima Online?";
         // today's date
@@ -410,16 +421,9 @@ $r =  $c->retrieve ($room, 'alala');
 echo "<pre>";
 var_dump($r);
 echo "</pre>";
-echo '<br><h2>get_room_exp</h2>';
+echo '<br><h2>get_room_exp expires in seconds</h2>';
 $date =  $c->get_room_exp ($room );
-echo strtotime($date);
 echo "<br>";
 echo $date;
-$time = DateTime::createFromFormat("Y-m-d H:i:s", $date);
-echo "<br>";
-echo $time->format('H:i:s');
-$time->add(new DateInterval('PT2H'));
-echo "<br>";
-echo $time->format('H:i:s');
 
 ?>
