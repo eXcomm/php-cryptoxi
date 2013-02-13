@@ -240,6 +240,8 @@ class CryptoXI {
 
     }
     function privatekey($room_id){
+        date_default_timezone_set('UTC');
+
         $static_key = "Anybody remember Ultima Online?";
         // today's date
         $t = time();
@@ -278,8 +280,9 @@ class CryptoXI {
     }
     function clean_up(){
         $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-         if ($mysqli->connect_errno) {
-            printf("Connect failed: %s\n", $mysqli->connect_error);
+         /* check connection */
+        if (mysqli_connect_errno()) {
+            printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
         }
         $table = TABLE_SES;
@@ -287,19 +290,16 @@ class CryptoXI {
         $q = "DELETE 
             FROM  `$table` 
             WHERE `date` < DATE_SUB( NOW( ) , INTERVAL 2 HOUR )";
-        if ($result = mysqli_query($mysqli, $q)) {
-                
-                echo "<h3>Rows Deleted ".mysqli_num_rows($result)."</h3>";
-                mysqli_free_result($result);
-                $mysqli->close();
-                return true;
-            }
-            else {
-                printf("Error: %s\n", mysqli_error($mysqli));
-                mysqli_free_result($result);
-                $mysqli->close();
-                return false;
-            }
+        if ($result = $mysqli->query( $q)) {
+
+            $mysqli->close();
+            return true;
+        }
+        else{
+            $mysqli->close();
+            return false;
+        }
+
     }
 
     function is_room_valid($room_id, $return_room_key = false, $return_room_id = false, $return_room_date = false){
