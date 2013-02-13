@@ -28,11 +28,11 @@ class CryptoXI {
             VALUES (
             NULL ,  '$room',  '$room_key', NOW( )
             );";
-        if ($result = mysqli_query($mysqli, $q)) {
+        if ($result = $mysqli->query($q)) {
             
             //if success return room id
             // free result set 
-            mysqli_free_result($result);
+            // mysqli_free_result($result);
             $mysqli->close();
             return $room_id;
         }
@@ -102,11 +102,11 @@ class CryptoXI {
                 NULL ,  '$hex',  '$chat_sessions_id'
                 );";
     
-            if ($result = mysqli_query($mysqli, $q)) {
+            if ($result = $mysqli->query($q)) {
                 printf ("New Record has id %d.\n", mysqli_insert_id($mysqli));
                 //if success return room id
                 // free result set 
-                mysqli_free_result($result);
+                // mysqli_free_result($result);
                 $mysqli->close();
 
                 return true;
@@ -151,11 +151,11 @@ class CryptoXI {
                 $row = $result->fetch_array(MYSQLI_NUM);
                 $count = $row[0];
 
-                mysqli_free_result($result);
+                // mysqli_free_result($result);
             }
             else {
                 printf("Error: %s\n", mysqli_error($mysqli));
-                mysqli_free_result($result);
+                // mysqli_free_result($result);
 
             }
 
@@ -178,7 +178,7 @@ class CryptoXI {
                 ";
             
             
-            if ($result = mysqli_query($mysqli, $q)) {
+            if ($result = $mysqli->query($q)) {
                 //if ($count > 0 && $read <= $count) {
                     # code...
                 //}
@@ -192,7 +192,7 @@ class CryptoXI {
                 echo "<h3>FOUND $count rows.</h3>";
                 // die('death');
 
-                mysqli_free_result($result);
+                // mysqli_free_result($result);
                 $mysqli->close();
 
                 //return decrypted array
@@ -200,7 +200,7 @@ class CryptoXI {
             }
             else {
                 printf("Error: %s\n", mysqli_error($mysqli));
-                mysqli_free_result($result);
+                // mysqli_free_result($result);
                 $mysqli->close();
                 return false;
             }
@@ -324,7 +324,7 @@ class CryptoXI {
             WHERE  `room` =  '$room'
             AND  `date` >= DATE_SUB( NOW( ) , INTERVAL 2 HOUR ) 
             LIMIT 0 , 30";
-        if ($result = mysqli_query($mysqli, $q)) {
+        if ($result = $mysqli->query($q)) {
             
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $room_key = $row['room_key'];
@@ -364,12 +364,12 @@ class CryptoXI {
 
                 $return = false;
             }
-            mysqli_free_result($result);
+            // mysqli_free_result($result);
             $mysqli->close();
         }
         else {
             printf("Error: %s\n", mysqli_error($mysqli));
-            mysqli_free_result($result);
+            // mysqli_free_result($result);
             $mysqli->close();
             $return = false;
         }
