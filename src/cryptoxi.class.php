@@ -390,40 +390,42 @@ class CryptoXI {
     }
 
 }
-include 'page.php';
-$c = new CryptoXI();
-echo "<h1>TESTS</h1>";
-echo '<h2>gen_room</h2>';
-$room = $c->gen_room();
-echo $room;
+function tests(){
+    include 'page.php';
+    $c = new CryptoXI();
+    echo "<h1>TESTS</h1>";
+    echo '<h2>gen_room</h2>';
+    $room = $c->gen_room();
+    echo $room;
 
-echo '<br><h2>get_room_key</h2>';
-echo $c->get_room_key($room );
+    echo '<br><h2>get_room_key</h2>';
+    echo $c->get_room_key($room );
 
-echo '<br><h2>is_room_valid</h2>';
-echo $c->is_room_valid ($room );
+    echo '<br><h2>is_room_valid</h2>';
+    echo $c->is_room_valid ($room );
 
-echo '<br><h2>get_roomID</h2>';
-echo $c->get_roomID ($room );
-echo '<br><h2>store</h2>';
-echo $c->store ($room, 'alala', 'text' );
-echo $c->store ($room, 'alala', 'text1' );
-echo $c->store ($room, 'alala', 'text2' );
-echo $c->store ($room, 'alala', 'text3' );
-echo $c->store ($room, 'alala', 'text4' );
-echo $c->store ($room, 'alala', 'text5' );
-echo $c->store ($room, 'alala', 'text6' );
-echo $c->store ($room, 'alala', 'text7' );
-echo $c->store ($room, 'alala', 'text8' );
-echo $c->store ($room, 'alala', 'text9' );
-echo '<br><h2>retrieve</h2>';
-$r =  $c->retrieve ($room, 'alala');
-echo "<pre>";
-var_dump($r);
-echo "</pre>";
-echo '<br><h2>get_room_exp expires in seconds</h2>';
-$date =  $c->get_room_exp ($room );
-echo "<br>";
-echo $date;
+    echo '<br><h2>get_roomID</h2>';
+    echo $c->get_roomID ($room );
+    echo '<br><h2>store</h2>';
+    echo $c->store ($room, 'alala', 'text' );
+    echo $c->store ($room, 'alala', 'text1' );
+    echo $c->store ($room, 'alala', 'text2' );
+    echo $c->store ($room, 'alala', 'text3' );
+    echo $c->store ($room, 'alala', 'text4' );
+    echo $c->store ($room, 'alala', 'text5' );
+    echo $c->store ($room, 'alala', 'text6' );
+    echo $c->store ($room, 'alala', 'text7' );
+    echo $c->store ($room, 'alala', 'text8' );
+    echo $c->store ($room, 'alala', 'text9' );
+    echo '<br><h2>retrieve</h2>';
+    $r =  $c->retrieve ($room, 'alala');
+    echo "<pre>";
+    var_dump($r);
+    echo "</pre>";
+    echo '<br><h2>get_room_exp expires in seconds</h2>';
+    $date =  $c->get_room_exp ($room );
+    echo "<br>";
+    echo $date;
+}
 
 ?>
